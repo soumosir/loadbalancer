@@ -10,6 +10,7 @@ single TCP connection
 Expensive
 dedicated network device 
 Not round robit in some cases
+no caching
 
 
 
@@ -40,6 +41,8 @@ url doesnt change
 software load balancer
 can see packet and then decide where to go
 round robbin mostly
+caching
+2 TCP connections
 
 acl app1 path_end -i /app1
 acl app2 path_end -i /app2
@@ -67,3 +70,39 @@ same for /app2
 
 
 # End of HA PROXY
+
+
+# PROXY VS REVERSE PROXY
+             
+   
+   Proxy : server doesnot know who the client is
+                              ______
+client 1 ---------http:80 ---|      |
+                             |      |
+client 2 ---------http:80 ---|PROXY |-------http:80-----SERVER
+                             |      |
+client 3 ---------http:80 ---|______|
+
+firewall
+annonimity
+
+
+  Reverse Proxy: Client doesnot know which server it is connecting to
+
+
+                             |      |-------http:8080-----SERVER1
+                             |      |
+client 1 ---------http:80 ---|reverse
+                             |PROXY |-------http:8080-----SERVER2
+                             |      |
+                             |______|-------http:8080-----SERVER3
+
+dont know which service exist in which server
+loadbalancing
+caching
+isolating internal traffic
+
+both at same time  - service mesh
+
+# nginx - one of few things that acts as web server and also as load balancer
+
